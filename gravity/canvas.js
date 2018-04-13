@@ -26,8 +26,8 @@ addEventListener("mousemove", function(event) {
 });
 
 addEventListener("touchmove", function(event) {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
+  mouse.x = event.touches[0].clientX;
+  mouse.y = event.touches[0].clientY;
 });
 
 addEventListener("mousedown", function() {
@@ -39,10 +39,12 @@ addEventListener("mouseup", function() {
 });
 
 addEventListener("touchstart", function() {
+  console.log("touchstart");
   mouseDown = true;
 });
 
 addEventListener("touchend", function() {
+  console.log("touchend");
   mouseDown = false;
 });
 
@@ -147,8 +149,8 @@ function init() {
     dragArea = canvas.width / 3;
   }
 
-  for (var i = 0; i < 400; i++) {
-    let radius = 30;
+  for (var i = 0; i < (canvas.width + canvas.height) / 4; i++) {
+    let radius = randomIntFromRange(10, 30);
     objects.push(
       new Object(
         randomIntFromRange(radius, canvas.width - radius),
