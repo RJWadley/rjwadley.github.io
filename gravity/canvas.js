@@ -1,9 +1,8 @@
 "use strict";
 
-
 // Initial Setup
-var canvas = document.querySelector('canvas');
-var c = canvas.getContext('2d');
+var canvas = document.querySelector("canvas");
+var c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -16,17 +15,17 @@ var mouse = {
 
 var dragArea = 200;
 
-var mouseDown
+var mouseDown;
 
-var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
+var colors = ["#2185C5", "#7ECEFD", "#FFF6E5", "#FF7F66"];
 
 // Event Listeners
-addEventListener('mousemove', function(event) {
+addEventListener("mousemove", function(event) {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
 });
 
-addEventListener('touchmove', function(event) {
+addEventListener("touchmove", function(event) {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
 });
@@ -47,7 +46,7 @@ addEventListener("touchend", function() {
   mouseDown = false;
 });
 
-addEventListener('resize', function() {
+addEventListener("resize", function() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 
@@ -81,8 +80,6 @@ function Object(x, y, radius, hue) {
 }
 
 Object.prototype.update = function() {
-
-
   if (this.y < canvas.height) {
     this.dy += 0.4;
   }
@@ -112,14 +109,14 @@ Object.prototype.update = function() {
     let distanceTo = distance(this.x, this.y, mouse.x, mouse.y);
     if (distanceTo < dragArea) {
       if (this.x > mouse.x) {
-        this.dx -= 2;
-      } else if (this.x < mouse.x) {
         this.dx += 2;
+      } else if (this.x < mouse.x) {
+        this.dx -= 2;
       }
       if (this.y > mouse.y) {
-        this.dy -= 2;
-      } else if (this.y < mouse.y) {
         this.dy += 2;
+      } else if (this.y < mouse.y) {
+        this.dy -= 2;
       }
     }
   }
@@ -127,8 +124,9 @@ Object.prototype.update = function() {
   this.y += this.dy;
   this.x += this.dx;
 
-  this.draw();
+  this.dx *= 0.99;
 
+  this.draw();
 };
 
 Object.prototype.draw = function() {
@@ -150,9 +148,15 @@ function init() {
   }
 
   for (var i = 0; i < 400; i++) {
-
     let radius = 30;
-    objects.push(new Object(randomIntFromRange(radius, canvas.width - radius), randomIntFromRange(radius, canvas.height - radius), radius, 210));
+    objects.push(
+      new Object(
+        randomIntFromRange(radius, canvas.width - radius),
+        randomIntFromRange(radius, canvas.height - radius),
+        radius,
+        210
+      )
+    );
   }
 }
 
