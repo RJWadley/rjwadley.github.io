@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  color: white;
+}
+
+canvas {
+  position: absolute;
+  background-color: black;
+  z-index: -1;
+}
+
+.content {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -150px;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  text-shadow: 2px 2px 10px black;
+}
