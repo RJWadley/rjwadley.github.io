@@ -1,0 +1,41 @@
+header {
+  font-family: Roboto, sans-serif;
+  font-size: 2em;
+  text-align: center;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 56em;
+  padding: 1em 0;
+}
+
+.grid {
+  /* Supports Grid */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: repeat(auto-fill, 1fr));
+  grid-gap: 1em;
+  margin: 1em;
+  color: red;
+}
+
+.module {
+  /* Demo-Specific Styles */
+  background: #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  /* Flex Fallback */
+  margin-left: 5px;
+  margin-right: 5px;
+  flex: 1 1 200px;
+}
+
+canvas {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
