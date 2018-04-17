@@ -5,14 +5,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <div class="slidecontainer">
+    <input type="range" min="100" max="1000" value="400" class="slider" id="range">
+    <p id="label">400</p>
+</div>
+  
+  <style>
+    body {
+      margin: 0;
+    }
 
-  <title>Gravity</title>
+    canvas {
+      position: absolute;
+      background-color: black;
+    }
+    
+    .slidecontainer {
+    width: 100%;
+  position:absolute;
+  left: 0;
+  z-index: 100;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background-color: #10101010;
+    outline: none;
+    opacity: 0.5;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+.slider:hover {
+    opacity: 1;
+  background-color: #d3d3d3;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: gray;
+    cursor: pointer;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background-color: #gray;
+    cursor: pointer;
+  
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background-color: limegreen;
+}
+
+.slider::-moz-range-thumb:hover {
+    background-color: limegreen;
+}
+
+#label {
+  color: white;
+  font-size: 100px;
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  opacity: 0;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+  </style>
 </head>
 
 <body>
   <canvas></canvas>
-
   <script src="canvas.js"></script>
 </body>
 
