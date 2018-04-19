@@ -7,8 +7,10 @@ var output = document.getElementById("label");
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-    objCount = this.value;
-    output.innerHTML = this.value;
+
+  objCount = this.value;
+  output.innerHTML = this.value;
+
   output.style.opacity = "1";
 
 }
@@ -184,17 +186,29 @@ function animate() {
   objects.forEach(object => {
     object.update();
   })
-  
-if (objects.length < objCount) {objects.push(
+
+
+  if (objects.length < objCount) {
+    objects.push(
       new Object(
         Math.random() * canvas.width,
         canvas.height + 50,
         30,
         `${objects[0].hue + (Math.random() - 0.5) * 10}`
-    ))} else if (objects.length > objCount) {objects.pop()} else {  output.style.opacity = "0";
+
+      ))
+  } else if (objects.length > objCount) {
+    objects.pop()
+  } else {
+    setTimeout(function() {
+      output.style.opacity = "0"
+    }, 1000);
+  }
+
 }
   
 }
+
 
 
 init();
