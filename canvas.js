@@ -148,6 +148,7 @@ Object.prototype.draw = function() {
 
 // Implementation
 var objects = void 0;
+var startHue = Math.random() * 360;
 
 function init() {
   objects = [];
@@ -159,7 +160,7 @@ function init() {
   for (var i = 0; i < objectCount; i++) {
 
 
-    objects.push(new Object(randomIntFromRange(radius, canvas.width - radius), randomIntFromRange(radius, canvas.height - radius), radius, 210));
+    objects.push(new Object(randomIntFromRange(radius, canvas.width - radius), randomIntFromRange(radius, canvas.height - radius), radius, startHue));
   }
 }
 
