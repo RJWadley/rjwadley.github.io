@@ -55,22 +55,26 @@
     window.addEventListener("mousemove", function(event) {
       mouse.x = event.x;
       mouse.y = event.y;
-      if (popCount > 5 && mousedown) {
+      if (popCount > 10 && mousedown) {
         bubblePop(event);
         popCount = 0;
-      } else {
+      } else if (mousedown) {
         popCount++;
+      } else {
+        popCount = 0;
       }
     });
 
     window.addEventListener("touchmove", function(event) {
       mouse.x = event.touches[0].clientX;
       mouse.y = event.touches[0].clientY;
-      if (popCount > 5 && mousedown) {
+      if (popCount > 10 && mousedown) {
         bubblePop(event);
         popCount = 0;
-      } else {
+      } else if (mousedown) {
         popCount++;
+      } else {
+        popCount = 0;
       }
     });
 
