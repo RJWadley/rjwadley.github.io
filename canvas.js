@@ -1,11 +1,29 @@
 "use strict";
 
+/*! Fades out the whole page when clicking links */
+
+var list = document.getElementsByTagName('a');
+for (var i = 0; i < list.length; i++) {
+  console.log(list[i].id); //second console output
+  list[i].onclick = function(e) {
+    e.preventDefault();
+    let newLocation = this.href;
+
+    document.body.style.opacity = "0";
+
+    setTimeout(function() {
+      window.location = newLocation;
+    }, 600);
+
+  }
+}
+
 
 
 // Initial Setup
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
-var radius = 2;
+var radius = 5;
 var objectCount = 400;
 
 canvas.width = innerWidth;
@@ -13,13 +31,13 @@ canvas.height = innerHeight;
 
 // Variables
 var mouse = {
-  x: innerWidth / 2,
-  y: innerHeight / 2
+  x: -1000,
+  y: -1000 / 2
 };
 
 var dragArea = 200;
 
-var mouseDown
+var mouseDown = true;
 
 var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
 
@@ -34,27 +52,10 @@ addEventListener('touchmove', function(event) {
   mouse.y = event.clientY;
 });
 
-addEventListener("mousedown", function() {
-  mouseDown = true;
-});
-
-addEventListener("mouseup", function() {
-  mouseDown = false;
-});
-
-addEventListener("touchstart", function() {
-  mouseDown = true;
-});
-
-addEventListener("touchend", function() {
-  mouseDown = false;
-});
-
 addEventListener('resize', function() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 
-  init();
 });
 
 // Utility Functions
@@ -106,9 +107,9 @@ Object.prototype.update = function() {
   }
 
   if (this.x + this.radius > canvas.width) {
-    this.dx = -Math.abs(0.9 * this.dx);
+    this.dx = -Math.abs(10 + this.dx);
   } else if (this.x - this.radius < 0) {
-    this.dx = Math.abs(0.9 * this.dx);
+    this.dx = Math.abs(10 + this.dx);
   }
 
   if (mouseDown) {

@@ -8,6 +8,19 @@ body {
   margin: 0 auto;
   max-width: 56em;
   padding: 1em 0;
+  -webkit-transition: all 500ms cubic-bezier(0.935, 0, 0.390, 1);
+  /* older webkit */
+  -webkit-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  -moz-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  -o-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  /* custom */
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  font-family: sans-serif;
 }
 
 .grid {
@@ -22,7 +35,13 @@ body {
 
 .module {
   /* Demo-Specific Styles */
-  background: #eaeaea;
+  background: #1FA2FF;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(45deg, #A6FFCB, #12D8FA, #1FA2FF);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(45deg, #A6FFCB, #12D8FA, #1FA2FF);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,6 +50,35 @@ body {
   margin-left: 5px;
   margin-right: 5px;
   flex: 1 1 200px;
+  border-radius: 15px;
+  -webkit-transition: all 500ms cubic-bezier(0.935, 0, 0.390, 1);
+  /* older webkit */
+  -webkit-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  -moz-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  -o-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+  /* custom */
+}
+
+.module:hover {
+  background: red;
+  background: #1FA2FF;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(70deg, #A6FFCB, #12D8FA, #1FA2FF);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(70deg, #A6FFCB, #12D8FA, #1FA2FF);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.module:active {
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -o-transform: scale(0.9);
+  transform: scale(0.9);
 }
 
 canvas {
