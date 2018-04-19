@@ -45,55 +45,52 @@
     let maxRadius = 50;
 
     let mouse = {
-      x: undefined,
-      y: undefined
+      x: canvas.width / 2,
+      y: canvas.height / 2
     };
 
+    var handled;
     var popCount = 0;
-    var mousedown = false;
 
     window.addEventListener("mousemove", function(event) {
       mouse.x = event.x;
       mouse.y = event.y;
-      if (popCount > 10 && mousedown) {
-        bubblePop(event);
-        popCount = 0;
-      } else if (mousedown) {
-        popCount++;
-      } else {
-        popCount = 0;
-      }
     });
 
     window.addEventListener("touchmove", function(event) {
       mouse.x = event.touches[0].clientX;
       mouse.y = event.touches[0].clientY;
-      if (popCount > 10 && mousedown) {
-        bubblePop(event);
-        popCount = 0;
-      } else if (mousedown) {
-        popCount++;
+    });
+
+    window.addEventListener("mousedown", function(event) {
+      if (bubblePop(event)) {
+        blowTons = window.setTimeout(function() {
+          blowTonsInterval = window.setInterval(function() {
+            bubblePop();
+          }, 100)
+        }, 500);
       } else {
-        popCount = 0;
+        bubbleBlow();
+        blowTons = window.setTimeout(function() {
+          blowTonsInterval = window.setInterval(function() {
+            bubbleBlow();
+          }, 100)
+        }, 500);
+      }
+    });
+
+    window.addEventListener("mouseup", function(event) {
+      try {
+        clearTimeout(blowTons);
+        clearInterval(blowTonsInterval);
+      } catch (err) {
+        console.log("error, probs cool tho")
       }
     });
 
     window.addEventListener("touchstart", function(event) {
-      bubblePop(event);
-      mousedown = true;
-    });
-
-    window.addEventListener("touchend", function(event) {
-      mousedown = false;
-    });
-
-    window.addEventListener("mousedown", function(event) {
-      bubblePop(event);
-      mousedown = true;
-    });
-
-    window.addEventListener("mouseup", function(event) {
-      mousedown = false;
+      mouse.x = event.touches[0].clientX;
+      mouse.y = event.touches[0].clientY;
     });
 
     window.addEventListener("resize", function(event) {
@@ -119,10 +116,14 @@
           console.log("pop!");
           let pop = new Audio('pop.mp3');
           pop.play();
-          return;
+          return true;
         }
       }
 
+
+    }
+
+    function bubbleBlow(event) {
       let radius = Math.random() * 80 + 20;
       let x = mouse.x;
       let y = mouse.y;
@@ -132,7 +133,6 @@
 
       let snap = new Audio('snap.mp3');
       snap.play();
-
     }
 
     function Circle(x, y, r, dx, dy) {
