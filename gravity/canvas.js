@@ -1,5 +1,19 @@
 "use strict";
 
+var slider = document.getElementById("range");
+var objCount = 400;
+var output = document.getElementById("label");
+
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  objCount = this.value;
+  output.innerHTML = this.value;
+  output.style.opacity = "1";
+
+}
+
+
 // Initial Setup
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
@@ -52,7 +66,6 @@ addEventListener("resize", function() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 
-  init();
 });
 
 // Utility Functions
@@ -102,9 +115,9 @@ Object.prototype.update = function() {
   }
 
   if (this.x + this.radius > canvas.width) {
-    this.dx = -Math.abs(0.9 * this.dx);
+    this.dx = -Math.abs(10 + this.dx);
   } else if (this.x - this.radius < 0) {
-    this.dx = Math.abs(0.9 * this.dx);
+    this.dx = Math.abs(10 + this.dx);
   }
 
   if (mouseDown) {
@@ -162,6 +175,7 @@ function init() {
   }
 }
 
+
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
@@ -169,8 +183,26 @@ function animate() {
 
   objects.forEach(object => {
     object.update();
-  });
+  })
+
+  if (objects.length < objCount) {
+    objects.push(
+      new Object(
+        Math.random() * canvas.width,
+        canvas.height + 50,
+        30,
+        `${objects[0].hue + (Math.random() - 0.5) * 10}`
+      ))
+  } else if (objects.length > objCount) {
+    objects.pop()
+  } else {
+    setTimeout(function() {
+      output.style.opacity = "0"
+    }, 1000);
+  }
+
 }
+
 
 init();
 animate();
