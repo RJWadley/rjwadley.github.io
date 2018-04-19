@@ -11,7 +11,6 @@ slider.oninput = function() {
   objCount = this.value;
   output.innerHTML = this.value;
 
-  output.style.opacity = "1";
 
 }
 
@@ -164,7 +163,7 @@ function init() {
     dragArea = canvas.width / 3;
   }
 
-  for (var i = 0; i < (canvas.width + canvas.height) / 4; i++) {
+  for (var i = 0; i < 400; i++) {
     let radius = randomIntFromRange(10, 30);
     objects.push(
       new Object(
@@ -197,16 +196,16 @@ function animate() {
         `${objects[0].hue + (Math.random() - 0.5) * 10}`
 
       ))
+    output.style.opacity = "1";
   } else if (objects.length > objCount) {
     objects.pop()
+    output.style.opacity = "1";
   } else {
-    setTimeout(function() {
-      output.style.opacity = "0"
-    }, 1000);
+    output.style.opacity = "0";
   }
 
 }
-  
+
 
 
 
