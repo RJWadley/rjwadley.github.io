@@ -11,7 +11,6 @@ slider.oninput = function() {
   objCount = this.value;
   output.innerHTML = this.value;
 
-
 }
 
 
@@ -45,6 +44,11 @@ addEventListener("touchmove", function(event) {
   mouse.y = event.touches[0].clientY;
 });
 
+//prefent left click
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+}, false);
+
 addEventListener("mousedown", function() {
   mouseDown = true;
 });
@@ -55,6 +59,8 @@ addEventListener("mouseup", function() {
 
 addEventListener("touchstart", function() {
   console.log("touchstart");
+  mouse.x = event.touches[0].clientX;
+  mouse.y = event.touches[0].clientY;
   mouseDown = true;
 });
 
@@ -196,12 +202,17 @@ function animate() {
         `${objects[0].hue + (Math.random() - 0.5) * 10}`
 
       ))
+    output.style.display = 'block';
     output.style.opacity = "1";
   } else if (objects.length > objCount) {
     objects.pop()
+    output.style.display = 'block';
     output.style.opacity = "1";
   } else {
     output.style.opacity = "0";
+    setTimeout(function() {
+      output.style.display = 'none';
+    }, 500);
   }
 
 }
