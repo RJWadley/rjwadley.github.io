@@ -4,15 +4,11 @@ var slider = document.getElementById("range");
 var objCount = 400;
 var output = document.getElementById("label");
 
-
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-
   objCount = this.value;
   output.innerHTML = this.value;
-
-}
-
+};
 
 // Initial Setup
 var canvas = document.querySelector("canvas");
@@ -45,9 +41,13 @@ addEventListener("touchmove", function(event) {
 });
 
 //prefent left click
-document.addEventListener("contextmenu", function(e){
+document.addEventListener(
+  "contextmenu",
+  function(e) {
     e.preventDefault();
-}, false);
+  },
+  false
+);
 
 addEventListener("mousedown", function() {
   mouseDown = true;
@@ -72,7 +72,6 @@ addEventListener("touchend", function() {
 addEventListener("resize", function() {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
-
 });
 
 // Utility Functions
@@ -99,6 +98,7 @@ function Object(x, y, radius, hue) {
   this.dy = 0;
   this.radius = radius;
   this.hue = hue;
+  this.exists = true;
 }
 
 Object.prototype.update = function() {
@@ -106,7 +106,7 @@ Object.prototype.update = function() {
     this.dy += 0.4;
   }
 
-  if (this.y + this.radius > canvas.height) {
+  if (this.y + this.radius > canvas.height && this.exists) {
     this.dy = -Math.abs(0.9 * this.dy);
     this.radius--;
     this.hue++;
@@ -117,7 +117,7 @@ Object.prototype.update = function() {
 
     if (this.radius < 2) {
       this.radius = 30;
-      this.dy = -20;
+      this.y = -30;
     }
   }
 
@@ -145,7 +145,7 @@ Object.prototype.update = function() {
 
   this.y += this.dy;
   this.x += this.dx;
-
+  
   this.dx *= 0.99;
 
   this.draw();
@@ -161,9 +161,11 @@ Object.prototype.draw = function() {
 
 // Implementation
 var objects = void 0;
+var toDelete = void 0;
 
 function init() {
   objects = [];
+  toDelete = [];
 
   if (dragArea > canvas.width / 3) {
     dragArea = canvas.width / 3;
@@ -182,16 +184,20 @@ function init() {
   }
 }
 
-
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
+  console.log(objects.length)
   c.clearRect(0, 0, canvas.width, canvas.height);
 
   objects.forEach(object => {
     object.update();
-  })
+  });
 
+  toDelete.forEach(object => {
+    object.update();
+    object.exists = false;
+  });
 
   if (objects.length < objCount) {
     objects.push(
@@ -200,26 +206,26 @@ function animate() {
         canvas.height + 50,
         30,
         `${objects[0].hue + (Math.random() - 0.5) * 10}`
-
-      ))
-    output.style.display = 'block';
+      )
+    );
+    output.style.display = "block";
     output.style.opacity = "1";
   } else if (objects.length > objCount) {
-    objects.pop()
-    output.style.display = 'block';
+    toDelete.push(objects.pop());
+    output.style.display = "block";
     output.style.opacity = "1";
   } else {
     output.style.opacity = "0";
     setTimeout(function() {
-      output.style.display = 'none';
+      output.style.display = "none";
     }, 500);
   }
-
+  if (toDelete.length > 0) {
+    if (toDelete[0].y - 30 > canvas.height) {
+      toDelete.shift();
+    }
+  }
 }
-
-
-
-
 
 init();
 animate();
