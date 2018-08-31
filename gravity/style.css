@@ -41,6 +41,7 @@ canvas {
   height: 25px;
   background-color: #10101010;
   outline: none;
+  margin: 0px;
   opacity: 0.5;
   -webkit-transition: all .5s;
   transition: all .5s;
