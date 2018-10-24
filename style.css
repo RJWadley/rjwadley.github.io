@@ -4,6 +4,12 @@ header {
   text-align: center;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
 body {
   margin: 0 auto;
   max-width: 56em;
@@ -15,12 +21,6 @@ body {
   -o-transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
   transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
   /* custom */
-}
-
-a {
-  color: black;
-  text-decoration: none;
-  font-family: sans-serif;
 }
 
 .grid {
