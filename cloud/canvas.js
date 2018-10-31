@@ -1,5 +1,6 @@
 "use strict";
 
+
 // Initial Setup
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
@@ -15,10 +16,36 @@ var mouse = {
 
 var mouseDown;
 
-var upPressed = false;
-var downPressed = false;
-var leftPressed = false;
-var rightPressed = false;
+switch (randomIntFromRange(0,8)) {
+  case 0:
+    var colors = ["#B7D3F2", "#AFAFDC", "#8A84E2", "#84AFE6", "#79BEEE"];
+    break;
+  case 1:
+    var colors = ["#1A1423", "#60D394", "#AAF683", "#FFD97D", "#FF9B85"];
+    break;
+  case 2:
+    var colors = ["#FFDDE2", "#EFD6D2", "#FF8CC6", "#DE369D", "#6F5E76"];
+    break;
+  case 3:
+    var colors = ["#0FA3B1", "#B5E2FA", "#F9F7F3", "#EDDEA4", "#F7A072"];
+    break;
+  case 4:
+    var colors = ["#CFFCFF", "#AAEFDF", "#9EE37D", "#63C132", "#358600"];
+    break;    
+  case 5:
+    var colors = ["#D72638", "#3F88C5", "#F49D37", "#140F2D", "#F22B29"];
+    break;    
+  case 6:
+    var colors = ["#982649", "#7C8483", "#71A2B6", "#60B2E5", "#53F4FF"];
+    break;      
+  case 7:
+    var colors = ["#1B2F33", "#28502E", "#47682C", "#8C7051", "#EF3054"];
+    break;    
+   case 8:
+    var colors = ["#AF3800", "#FE621D", "#FD5200", "#00CFC1", "#00FFE7"];
+    break;    
+}
+
 
 // Event Listeners
 addEventListener("mousemove", function(event) {
@@ -30,48 +57,6 @@ addEventListener("touchmove", function(event) {
   mouse.x = event.touches[0].clientX;
   mouse.y = event.touches[0].clientY;
 });
-
-document.onkeydown = checkKey;
-
-//keydown handler
-function checkKey(e) {
-  e = e || window.event;
-
-  if (e.keyCode == "38" || e.keyCode == "87") {
-    // up arrow
-    upPressed = true;
-  } else if (e.keyCode == "40" || e.keyCode == "83") {
-    // down arrow
-    downPressed = true;
-  } else if (e.keyCode == "37" || e.keyCode == "65") {
-    // left arrow
-    leftPressed = true;
-  } else if (e.keyCode == "39" || e.keyCode == "68") {
-    // right arrow
-    rightPressed = true;
-  }
-}
-
-//keyup handler
-document.onkeyup = function(e) {
-  {
-    e = e || window.event;
-
-    if (e.keyCode == "38" || e.keyCode == "87") {
-      // up arrow
-      upPressed = false;
-    } else if (e.keyCode == "40" || e.keyCode == "83") {
-      // down arrow
-      downPressed = false;
-    } else if (e.keyCode == "37" || e.keyCode == "65") {
-      // left arrow
-      leftPressed = false;
-    } else if (e.keyCode == "39" || e.keyCode == "68") {
-      // right arrow
-      rightPressed = false;
-    }
-  }
-};
 
 //prevent left click
 document.addEventListener(
@@ -112,15 +97,6 @@ Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
 
-this.move = function(point, angle, unit) {
-  var x = point[0];
-  var y = point[1];
-  var rad = Math.radians(angle % 360);
-
-  this.x += unit * Math.sin(rad);
-  this.y += unit * Math.cos(rad);
-};
-
 function randomIntFromRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -135,6 +111,7 @@ function distance(x1, y1, x2, y2) {
 
   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }
+
 window.onerror = function(msg, url, linenumber) {
   document.write(
     "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber
@@ -148,67 +125,44 @@ function Player(x, y, radius) {
   this.dy = 0;
   this.x = x;
   this.y = y;
-  this.hue = 0;
+  this.color = colors[randomIntFromRange(0, 4)];
+
+  this.move = function(point, angle, unit) {
+    var x = point[0];
+    var y = point[1];
+    var rad = Math.radians(angle % 360);
+
+    this.dx += unit * Math.sin(rad);
+    this.dy += unit * Math.cos(rad);
+  };
 
   this.radius = radius;
 }
 
 Player.prototype.update = function() {
-  if (upPressed) {
-    this.dy--;
-  }
-  if (downPressed) {
-    this.dy++;
-  }
-  if (leftPressed) {
-    this.dx--;
-  }
-  if (rightPressed) {
-    this.dx++;
-  }
+  let thisDistance = distance(this.x, this.y, mouse.x, mouse.y);
 
-  this.y += this.dy / this.radius * 10;
-  this.x += this.dx / this.radius * 10;
+  this.dx += (mouse.x - this.x) * (1 / thisDistance) * 0.1;
+  this.dy += (mouse.y - this.y) * (1 / thisDistance) * 0.1;
 
-  if (this.x < 0 - this.radius) {
-    this.x = canvas.width - 10 + this.radius;
-  }
-  if (this.x > canvas.width + this.radius) {
-    this.x = -this.radius + 10 //canvas.width - this.radius;
-  }
-  if (this.y < 0 - this.radius) {
-    this.y = canvas.height - 10 + this.radius;
-  }
-  if (this.y > canvas.height + this.radius) {
-    this.y = -this.radius + 10 //canvas.width - this.radius;
-  }
+  this.y += this.dy;
+  this.x += this.dx;
 
-  playerCollection.forEach(object => {
-    let currentDistance = distance(this.x, this.y, object.x, object.y);
-    if (currentDistance < object.radius + this.radius) {
-      if (currentDistance == 0) {
-        return;
-      }
-      this.radius--;
-      return;
-    }
-  });
-
-  this.dx += (Math.random() - 0.6);
-  this.dy += (Math.random() - 0.3);
-
-  this.dx *= 0.9;
-  this.dy *= 0.9;
-
-  if (this.radius <= 3) {
-    this.radius = 50; //canvas.width * Math.random();
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.hue += 10;
-    if (this.hue > 360) {
-      this.hue = 0;
-    }
+  /*if (this.x < this.radius) {
+    this.x = this.radius;
   }
+  if (this.x > canvas.width - this.radius) {
+    this.x = canvas.width - this.radius;
+  }
+   if (this.y < this.radius) {
+    this.y = this.radius;
+  }
+  if (this.y > canvas.height - this.radius) {
+    this.y = canvas.height - this.radius;
+  }
+*/
+  this.dy *= 0.999;
+  this.dx *= 0.999;
 
   this.draw();
 };
@@ -217,9 +171,9 @@ Player.prototype.draw = function() {
   //fill
   c.beginPath();
   c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-  c.strokeStyle = "hsl(" + this.hue + ",100%, 50%)";
+  c.fillStyle = this.color;
   c.lineWidth = 5;
-  c.stroke();
+  c.fill();
   c.closePath();
 };
 
@@ -231,7 +185,7 @@ function newPlayer() {
     new Player(
       Math.random() * canvas.width,
       Math.random() * canvas.height,
-      Math.random() * 100
+      Math.random() * 10
     )
   );
 }
@@ -239,7 +193,7 @@ function newPlayer() {
 function init() {
   playerCollection = [];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 500; i++) {
     newPlayer();
   }
 }
