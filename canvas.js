@@ -18,7 +18,6 @@ for (var i = 0; i < list.length; i++) {
 }
 
 
-
 // Initial Setup
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");

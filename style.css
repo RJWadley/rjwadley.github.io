@@ -6,9 +6,11 @@ header {
 }
 
 a {
+	position: relative;
 	color: white;
 	text-decoration: none;
 	font-family: sans-serif;
+	text-shadow: 2px 2px 5px black;
 }
 
 body {
@@ -38,6 +40,7 @@ body.fade-in {
 	justify-content: center;
 	border-radius: 15px;
 	transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
+	overflow: hidden;
 }
 
 .module:hover {
@@ -64,4 +67,13 @@ canvas {
 	position: fixed;
 	left: 0;
 	top: 0;
+}
+
+.background_frame {
+  position: absolute;
+	min-height: 201px;
+	z-index: -1;
+	border-radius: 15px;
+	opacity: 0.8;    
+	width: 101%; /* new width (100 * (1/0.8) )*/
 }
