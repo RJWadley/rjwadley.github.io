@@ -28,8 +28,7 @@ body.fade-in {
 }
 
 .module {
-	background: #1FA2FF;
-	background: linear-gradient(45deg, #A6FFCB, #12D8FA, #1FA2FF);
+	background-color: white;
 	z-index: 100;
 	opacity: 0.9;
 	height: 200px;
@@ -44,10 +43,8 @@ body.fade-in {
 }
 
 .module:hover {
-	background: #1FA2FF;
-	/* fallback for old browsers */
-	background: linear-gradient(70deg, #A6FFCB, #12D8FA, #1FA2FF);
 	transform: scale(1.1);
+	opacity: 1;
 }
 
 .module:active {
@@ -55,7 +52,7 @@ body.fade-in {
 }
 
 .directory {
-	padding: 10px;
+	padding: 20px;
   display: grid;
  grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
   grid-gap: 20px;
