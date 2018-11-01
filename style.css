@@ -29,6 +29,7 @@ body.fade-in {
 
 .module {
 	background-color: white;
+	overflow: hidden;
 	z-index: 100;
 	opacity: 0.9;
 	height: 200px;
@@ -39,7 +40,6 @@ body.fade-in {
 	justify-content: center;
 	border-radius: 15px;
 	transition: all 500ms cubic-bezier(0.935, -0.410, 0.390, 1.165);
-	overflow: hidden;
 }
 
 .module:hover {
