@@ -1,149 +1,189 @@
+var canvas = document.querySelector("canvas");
 
-    var canvas = document.querySelector("canvas");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+var c = canvas.getContext("2d");
 
-    var c = canvas.getContext("2d");
-    /*s
-    c.fillStyle = "pink";
-    c.fillRect(100, 100, 100, 100);
-    c.fillStyle = "dodgerblue";
-    c.fillRect(500, 400, 60, 40);
-    c.fillStyle = "orange";
-    c.fillRect(200, 500, 200, 89)
-    //line
+var mouse = {
+	x: undefined,
+	y: undefined
+};
 
-    c.beginPath();
-    c.moveTo(50,100);
-    c.lineTo(300,300);
-    c.lineTo(100,50);
-    c.lineTo(100,500);
-    c.strokeStyle = 'blue';
-    c.stroke();
+var circlesArray = [];
 
-    //arc
-    var circle = function(x, y, r) {
-      c.beginPath();
-      c.arc(x, y, r, 0, Math.PI * 2, false);
-      c.stroke();
-    };
-
-    c.strokeStyle = "green";
-    circle(300,400,50);
-
-    for (let i = 0; i < 1000; i++) {
-      c.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
-      circle(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 30);
-    }
-    */
-
-addEventListener("resize", function() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+// Event Listeners
+addEventListener("mousemove", function(event) {
+	mouse.x = event.clientX;
+	mouse.y = event.clientY;
 });
 
-    let maxRadius = 50;
+addEventListener("mousedown", function(event) {
+	if (player.radius > 4) {
+	let radius = Math.random() * 80 + 20;
+	let x = Math.random() * (innerWidth - 2 * radius) + radius;
+	let y = Math.random() * (innerHeight - 2 * radius) + radius;
+	let dx = (Math.random() - 0.5) * 10;
+	let dy = (Math.random() - 0.5) * 10;
+	new Circle(200, 200, 30, 3, 3);
+	circlesArray.push(new Circle(x, y, radius, dx, dy));
+	player.radius -= 3;}
+});
+document.addEventListener('keydown', (event) => {
+	if (player.radius > 4 && event.keyCode === 32) {
+	let radius = Math.random() * 80 + 20;
+	let x = Math.random() * (innerWidth - 2 * radius) + radius;
+	let y = Math.random() * (innerHeight - 2 * radius) + radius;
+	let dx = (Math.random() - 0.5) * 10;
+	let dy = (Math.random() - 0.5) * 10;
+	new Circle(200, 200, 30, 3, 3);
+	circlesArray.push(new Circle(x, y, radius, dx, dy));
+	player.radius--;}
+});
 
-    let mouse = {
-      x: undefined,
-      y: undefined
-    };
+addEventListener("touchstart", function(event) {
+	mouse.x = event.touches[0].clientX;
+	mouse.y = event.touches[0].clientY;
+});
 
-    window.addEventListener("mousemove", function(event) {
-      mouse.x = event.x;
-      mouse.y = event.y;
-    });
+addEventListener("mousemove", function(event) {
+	mouse.x = event.clientX;
+	mouse.y = event.clientY;
+});
+
+addEventListener("touchmove", function(event) {
+	mouse.x = event.touches[0].clientX;
+	mouse.y = event.touches[0].clientY;
+});
+
+addEventListener("resize", function() {
+	canvas.width = innerWidth;
+	canvas.height = innerHeight;
+});
+
+function distance(x1, y1, x2, y2) {
+	var xDist = x2 - x1;
+	var yDist = y2 - y1;
+
+	return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+}
+
+window.addEventListener("mousemove", function(event) {
+	mouse.x = event.x;
+	mouse.y = event.y;
+});
+
+function Circle(x, y, r, dx, dy) {
+	this.x = x;
+	this.y = y;
+	this.dx = dx;
+	this.dy = dy;
+	this.radius = r / 10;
+	this.hue = Math.random() * 360;
+
+	this.draw = function() {
+		c.beginPath();
+		c.strokeStyle = `hsl(${this.hue}, 100%, 20%)`;
+		c.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
+		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		c.stroke();
+		c.fill();
+	};
+
+	this.update = function() {
+		if (this.x > canvas.width - this.radius) {
+			this.dx = -Math.abs(this.dx);
+		}
+
+		if (this.x < this.radius) {
+			this.dx = Math.abs(this.dx);
+		}
+
+		if (this.y > canvas.height - this.radius) {
+			this.dy = -Math.abs(this.dy);
+		}
+
+		if (this.y < this.radius) {
+			this.dy = Math.abs(this.dx);
+		}
 
 
+		this.x += this.dx;
+		this.y += this.dy;
 
-    function Circle(x, y, r, dx, dy) {
-      this.x = x;
-      this.y = y;
-      this.dx = dx;
-      this.dy = dy;
-      this.permRadius = r;
-      this.radius = r / 10;
-      this.hue = Math.random() * 360;
+		this.hue++;
+		if (this.hue > 360) {
+			this.hue = 0;
+		}
 
-      this.draw = function() {
-        c.beginPath();
-        c.strokeStyle = `hsl(${this.hue}, 100%, 20%)`;
-        c.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        c.stroke();
-        c.fill();
-      };
+		this.draw();
+	};
+}
 
-      this.update = function() {
-        if (this.x > canvas.width - this.radius) {
-          this.dx = -Math.abs(this.dx);
-        }
+let player = new Circle(200, 200, 30, 0, 0);
 
-        if (this.x < this.radius) {
-          this.dx = Math.abs(this.dx);
-        }
-        
-           if (this.y > canvas.height - this.radius) {
-          this.dy = -Math.abs(this.dy);
-        }
+player.velocityPercent = 0.5;
 
-        if (this.y < this.radius) {
-          this.dy = Math.abs(this.dx);
-        }
+player.update = function() {
 
-        
-        this.x += this.dx;
-        this.y += this.dy;
+	//movement and velocity
+	if (this.y > mouse.y) {
+		this.dy = Math.abs(this.y - mouse.y) * -this.velocityPercent;
+	} else if (this.y < mouse.y) {
+		this.dy = Math.abs(this.y - mouse.y) * this.velocityPercent;
+	} else if (this.y == mouse.y) {
+		this.dy = 0;
+	}
+	this.y += this.dy;
 
-        this.hue++;
-        if (this.hue > 360) {
-          this.hue = 0;
-        }
-
-        //interactivity
-
-        if (
-          mouse.x - this.x < 100 &&
-          mouse.x - this.x > -100 &&
-          mouse.y - this.y < 100 &&
-          mouse.y - this.y > -100
-        ) {
-
-          if (this.radius < this.permRadius) {
-            this.radius += 2;
-          }
-        } else if (this.radius > this.permRadius/10) {
-          this.radius -= 2;
-        }
-
-        this.draw();
-      };
-    }
-
-    let circle = new Circle(200, 200, 30, 3, 3);
-
-    let circlesArray = [];
-
-    for (let i = 0; i < ((innerWidth + innerHeight) / 2 / 2); i++) {
-      let radius = Math.random() * 80 + 20;
-      let x = Math.random() * (innerWidth - 2 * radius) + radius;
-      let y = Math.random() * (innerHeight - 2 * radius) + radius;
-      let dx = (Math.random() - 0.5) * 10;
-      let dy = (Math.random() - 0.5) * 10;
-      new Circle(200, 200, 30, 3, 3);
-      circlesArray.push(new Circle(x, y, radius, dx, dy));
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      c.clearRect(0, 0, innerWidth, innerHeight);
-
-      circle.update();
+	if (this.x > mouse.x) {
+		this.dx = Math.abs(this.x - mouse.x) * -this.velocityPercent;
+	} else if (this.x < mouse.x) {
+		this.dx = Math.abs(this.x - mouse.x) * this.velocityPercent;
+	} else if (this.x == mouse.x) {
+		this.dx = 0;
+	}
+	this.x += this.dx;
 
       for (let i in circlesArray) {
-        circlesArray[i].update();
+		let currentDistance = distance(this.x, this.y, circlesArray[i].x, circlesArray[i].y);
+		if (currentDistance < circlesArray[i].radius + this.radius) {
+			if (currentDistance == 0) {
+				return;
+			}
+			circlesArray[i].radius--;
+			
+			if (circlesArray[i].radius < 2) {
+				  circlesArray.splice(i, 1);
+				  this.radius++;
+			}
+			
+		}
       }
-    }
 
-    animate();
+	this.draw();
+};
+
+
+for (let i = 0; i < ((innerWidth + innerHeight) / 2 / 2); i++) {
+	let radius = Math.random() * 80 + 20;
+	let x = Math.random() * (innerWidth - 2 * radius) + radius;
+	let y = Math.random() * (innerHeight - 2 * radius) + radius;
+	let dx = (Math.random() - 0.5) * 10;
+	let dy = (Math.random() - 0.5) * 10;
+	new Circle(200, 200, 30, 3, 3);
+	circlesArray.push(new Circle(x, y, radius, dx, dy));
+}
+
+function animate() {
+	requestAnimationFrame(animate);
+	c.clearRect(0, 0, innerWidth, innerHeight);
+
+	circlesArray.forEach(object => {
+		object.update();
+	});
+	
+		player.update();
+}
+
+animate();
