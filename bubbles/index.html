@@ -24,19 +24,21 @@
 		
 		.win {
 			position: absolute;
-			top: calc(50vh - 125px);
-			left: calc(50vw - 125px);
-			width: 250px;
-			height: 250px;
+			top: calc(50vh - 300px);
+			left: calc(50vw - 300px);
+			width: 600px;
+			height: 600px;
 			background-color: ghostwhite;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			flex-direction: column;
+			flex-direction: row;
 			border-radius: 5px;
 			box-shadow: 5px 10px 50px gray;
 			opacity: 0;
 			transition: all 1s ease-in-out;
+			flex-wrap: wrap;
+			padding: 20px;
 		}
 		
 		.win__show {
@@ -59,6 +61,17 @@
 		.win__header {
 			font-family: sans-serif;
 		}
+		
+		.me {
+		    width: 100px;
+		    }
+		.adrienne {
+		    width: 100px;
+		    }
+		.wordart {
+		    width: 400px;
+		}
+		
 	</style>
 
 
@@ -218,7 +231,7 @@
 		let circlesArray = [];
 
 		function init() {
-			for (let i = 0; i < (innerWidth + innerHeight) / 10 + 1; i++) {
+			for (let i = 0; i < 3 /*(innerWidth + innerHeight) / 10 + 1*/; i++) {
 				let radius = Math.random() * 80 + 20;
 				let x = Math.random() * (innerWidth - 2 * radius) + radius;
 				let y = Math.random() * (innerHeight - 2 * radius) + radius;
@@ -297,9 +310,11 @@
 
 
 	<div class='win' id='win'>
-		<h1 class='win__header'>Yay</h1>
-		<p class="win__text">ya did it</p>
+	   <img src="me.png" class="me">
+	   <img src="prom.png" class="wordart">
+	   <img src="adriennecutout.png" class="adrienne">
 		<button class="win__button" id='win__button' onClick="win();">Cool</button>
+		<a href="https://www.youtube.com/embed/XdofmoYcJNE" style="margin-left: 10px">No way jose</a>
 	</div>
 
 
