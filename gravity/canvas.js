@@ -12,7 +12,8 @@ slider.oninput = function() {
 
 // Initial Setup
 var canvas = document.querySelector("canvas");
-var c = canvas.getContext("2d");
+var c = canvas.getContext('2d', { alpha: false });
+
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -30,12 +31,12 @@ var mouseDown;
 var colors = ["#2185C5", "#7ECEFD", "#FFF6E5", "#FF7F66"];
 
 // Event Listeners
-addEventListener("mousemove", function(event) {
+addEventListener("mousemove", function() {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
 });
 
-addEventListener("touchmove", function(event) {
+addEventListener("touchmove", function() {
   mouse.x = event.touches[0].clientX;
   mouse.y = event.touches[0].clientY;
 });
@@ -90,8 +91,8 @@ function distance(x1, y1, x2, y2) {
   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }
 
-// Objects
-function Object(x, y, radius, hue) {
+// Balls
+function Ball(x, y, radius, hue) {
   this.x = x;
   this.y = y;
   this.dx = 0;
@@ -99,9 +100,9 @@ function Object(x, y, radius, hue) {
   this.radius = radius;
   this.hue = hue;
   this.exists = true;
-}
 
-Object.prototype.update = function() {
+
+this.update = function() {
   if (this.y < canvas.height) {
     this.dy += 0.4;
   }
@@ -128,18 +129,10 @@ Object.prototype.update = function() {
   }
 
   if (mouseDown) {
-    let distanceTo = distance(this.x, this.y, mouse.x, mouse.y);
-    if (distanceTo < dragArea) {
-      if (this.x > mouse.x) {
-        this.dx += 2;
-      } else if (this.x < mouse.x) {
-        this.dx -= 2;
-      }
-      if (this.y > mouse.y) {
-        this.dy += 2;
-      } else if (this.y < mouse.y) {
-        this.dy -= 2;
-      }
+    //let distanceTo = distance(this.x, this.y, mouse.x, mouse.y);
+    if (((mouse.x - this.x) ** 2 + (mouse.y - this.y) ** 2) < (dragArea ** 2)) {
+        this.dx += (mouse.x-this.x) * .01;
+        this.dy += (mouse.y-this.y) * .02;
     }
   }
 
@@ -151,20 +144,24 @@ Object.prototype.update = function() {
   this.draw();
 };
 
-Object.prototype.draw = function() {
+
+this.draw = function() {
   c.beginPath();
-  c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+  c.arc(Math.floor(this.x), Math.floor(this.y), this.radius, 0, Math.PI * 2, false);
   c.fillStyle = `hsl(${this.hue}, 100%, 56%)`;
   c.fill();
   c.closePath();
 };
 
+
+}
+
 // Implementation
-var objects = void 0;
+var balls = void 0;
 var toDelete = void 0;
 
 function init() {
-  objects = [];
+  balls = [];
   toDelete = [];
 
   if (dragArea > canvas.width / 3) {
@@ -173,8 +170,8 @@ function init() {
 
   for (var i = 0; i < 400; i++) {
     let radius = randomIntFromRange(10, 30);
-    objects.push(
-      new Object(
+    balls.push(
+      new Ball(
         randomIntFromRange(radius, canvas.width - radius),
         randomIntFromRange(radius, canvas.height - radius),
         radius,
@@ -187,31 +184,31 @@ function init() {
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
-  console.log(objects.length)
-  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.fillStyle = '#000';
+  c.fillRect(0, 0, canvas.width, canvas.height);
 
-  objects.forEach(object => {
-    object.update();
+  balls.forEach(ball => {
+    ball.update();
   });
 
-  toDelete.forEach(object => {
-    object.update();
-    object.exists = false;
+  toDelete.forEach(ball => {
+    ball.update();
+    ball.exists = false;
   });
 
-  if (objects.length < objCount) {
-    objects.push(
-      new Object(
+  if (balls.length < objCount) {
+    balls.push(
+      new Ball(
         Math.random() * canvas.width,
         canvas.height + 50,
         30,
-        `${objects[0].hue + (Math.random() - 0.5) * 10}`
+        `${balls[0].hue + (Math.random() - 0.5) * 10}`
       )
     );
     output.style.display = "block";
     output.style.opacity = "1";
-  } else if (objects.length > objCount) {
-    toDelete.push(objects.pop());
+  } else if (balls.length > objCount) {
+    toDelete.push(balls.pop());
     output.style.display = "block";
     output.style.opacity = "1";
   } else {
