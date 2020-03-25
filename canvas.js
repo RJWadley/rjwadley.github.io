@@ -91,14 +91,6 @@ document.onkeyup = function(e) {
 	}
 };
 
-//prevent left click
-document.addEventListener(
-	"contextmenu",
-	function(e) {
-		e.preventDefault();
-	},
-	false
-);
 
 addEventListener("mousedown", function() {
 	mouseDown = true;
