@@ -288,6 +288,6 @@ function startAnimating(fps) {
 }
 
 startAnimating(60);
-		setTimeout(function() {
-document.body.className += ' fade-in';
-		}, 10);
+setTimeout(function() {
+    document.body.className += ' fade-in';
+}, 100);
