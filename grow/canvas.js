@@ -18,27 +18,20 @@ addEventListener("mousemove", function(event) {
 	mouse.y = event.clientY;
 });
 
-addEventListener("mousedown", function(event) {
+addEventListener("mousedown", function() {
 	if (player.radius > 4) {
-	let radius = Math.random() * 80 + 20;
-	let x = Math.random() * (innerWidth - 2 * radius) + radius;
-	let y = Math.random() * (innerHeight - 2 * radius) + radius;
-	let dx = (Math.random() - 0.5) * 10;
-	let dy = (Math.random() - 0.5) * 10;
-	new Circle(200, 200, 30, 3, 3);
-	circlesArray.push(new Circle(x, y, radius, dx, dy));
-	player.radius -= 3;}
-});
-document.addEventListener('keydown', (event) => {
-	if (player.radius > 4 && event.keyCode === 32) {
-	let radius = Math.random() * 80 + 20;
-	let x = Math.random() * (innerWidth - 2 * radius) + radius;
-	let y = Math.random() * (innerHeight - 2 * radius) + radius;
-	let dx = (Math.random() - 0.5) * 10;
-	let dy = (Math.random() - 0.5) * 10;
-	new Circle(200, 200, 30, 3, 3);
-	circlesArray.push(new Circle(x, y, radius, dx, dy));
-	player.radius--;}
+        let radius = Math.random() * 80 + 20;
+        let x = Math.random() * (innerWidth - 2 * radius) + radius;
+        let y = Math.random() * (innerHeight - 2 * radius) + radius;
+        let dx = (Math.random() - 0.5) * 10;
+        let dy = (Math.random() - 0.5) * 10;
+        if (((player.x - x) ** 2 + (player.y - y) ** 2) < ((radius + player.radius) ** 2)) {
+            x += player.radius * 2;
+        }
+        new Circle(200, 200, 30, 3, 3);
+        circlesArray.push(new Circle(x, y, radius, dx, dy));
+        player.circumference -= 1;
+    }
 });
 
 addEventListener("touchstart", function(event) {
@@ -91,19 +84,19 @@ function Circle(x, y, r, dx, dy) {
 	};
 
 	this.update = function() {
-		if (this.x > canvas.width - this.radius) {
+		if (this.x > canvas.width - this.radius + player.radius + this.radius*2) {
 			this.dx = -Math.abs(this.dx);
 		}
 
-		if (this.x < this.radius) {
+		if (this.x < this.radius - player.radius - this.radius*2) {
 			this.dx = Math.abs(this.dx);
 		}
 
-		if (this.y > canvas.height - this.radius) {
+		if (this.y > canvas.height - this.radius + player.radius + this.radius*2) {
 			this.dy = -Math.abs(this.dy);
 		}
 
-		if (this.y < this.radius) {
+		if (this.y < this.radius - player.radius - this.radius*2) {
 			this.dy = Math.abs(this.dx);
 		}
 
@@ -114,7 +107,25 @@ function Circle(x, y, r, dx, dy) {
 		this.hue++;
 		if (this.hue > 360) {
 			this.hue = 0;
-		}
+        }
+
+        this.dx += Math.random() * 1 - 0.5;
+        this.dy += Math.random() * 1 - 0.5;
+
+        if (((player.x - this.x) ** 2 + (player.y - this.y) ** 2) < ((this.radius * 2 + player.radius + 50) ** 2)) {
+            this.dx -= (player.x-this.x) * .01;
+            this.dy -= (player.y-this.y) * .01;
+        }
+
+        if (Math.abs(this.dx) > 5 || Math.abs(this.dy) > 5) {
+            this.dx *= 0.9;
+            this.dy *= 0.9;
+        }
+
+        if (Math.abs(this.dx) < 1 || Math.abs(this.dy) < 1) {
+            this.dx *= 1.1;
+            this.dy *= 1.1;
+        }
 
 		this.draw();
 	};
@@ -123,8 +134,11 @@ function Circle(x, y, r, dx, dy) {
 let player = new Circle(200, 200, 30, 0, 0);
 
 player.velocityPercent = 0.5;
+player.circumference = 10;
 
 player.update = function() {
+
+    //this.velocityPercent = 4 / this.radius;
 
 	//movement and velocity
 	if (this.y > mouse.y) {
@@ -152,28 +166,44 @@ player.update = function() {
 				return;
 			}
 			circlesArray[i].radius--;
-			
+
 			if (circlesArray[i].radius < 2) {
 				  circlesArray.splice(i, 1);
-				  this.radius++;
+                  this.circumference += 0.1;
+                  this.radius = (this.circumference ** 2/(4*3.14));
 			}
-			
+
 		}
       }
+
+    if (circlesArray.length < 1) {
+        player.circumference = -10;
+        init();
+        for (let i in circlesArray) {
+            circlesArray[i].x = player.x;
+            circlesArray[i].y = player.y;
+        }
+        window.setTimeout(function(){
+            player.circumference = 10;
+        },2000)
+    }
 
 	this.draw();
 };
 
-
-for (let i = 0; i < ((innerWidth + innerHeight) / 2 / 2); i++) {
-	let radius = Math.random() * 80 + 20;
-	let x = Math.random() * (innerWidth - 2 * radius) + radius;
-	let y = Math.random() * (innerHeight - 2 * radius) + radius;
-	let dx = (Math.random() - 0.5) * 10;
-	let dy = (Math.random() - 0.5) * 10;
-	new Circle(200, 200, 30, 3, 3);
-	circlesArray.push(new Circle(x, y, radius, dx, dy));
+function init() {
+    for (let i = 0; i < ((innerWidth + innerHeight) / 2 / 2); i++) {
+        let radius = Math.random() * 80 + 20;
+        let x = Math.random() * (innerWidth - 2 * radius) + radius;
+        let y = Math.random() * (innerHeight - 2 * radius) + radius;
+        let dx = (Math.random() - 0.5) * 10;
+        let dy = (Math.random() - 0.5) * 10;
+        new Circle(200, 200, 30, 3, 3);
+        circlesArray.push(new Circle(x, y, radius, dx, dy));
+    }
 }
+
+init();
 
 function animate() {
 	requestAnimationFrame(animate);
@@ -182,7 +212,7 @@ function animate() {
 	circlesArray.forEach(object => {
 		object.update();
 	});
-	
+
 		player.update();
 }
 
