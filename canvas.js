@@ -153,12 +153,12 @@ window.onerror = function(msg, url, linenumber) {
 };
 
 // player
-function Player(x, y, radius) {
+function Player(x, y, radius, hue) {
 	this.dx = 0;
 	this.dy = 0;
 	this.x = x;
 	this.y = y;
-	this.hue = 0;
+	this.hue = hue;
 
 	this.radius = radius;
 }
@@ -236,12 +236,13 @@ Player.prototype.draw = function() {
 // Implementation
 var playerCollection = void 0;
 
-function newPlayer() {
+function newPlayer(hue) {
 	playerCollection.push(
 		new Player(
 			Math.random() * canvas.width,
 			Math.random() * canvas.height,
-			Math.random() * 100
+            Math.random() * 100,
+            hue
 		)
 	);
 }
@@ -249,8 +250,10 @@ function newPlayer() {
 function init() {
 	playerCollection = [];
 
+    let hue = Math.floor(Math.random() * 360)
+
 	for (let i = 0; i < 100; i++) {
-		newPlayer();
+		newPlayer(hue);
 	}
 }
 
@@ -290,4 +293,7 @@ function startAnimating(fps) {
 startAnimating(60);
 setTimeout(function() {
     document.body.className += ' fade-in';
-}, 100);
+    console.log(document.getElementById("html"))
+    document.getElementById("html").style.opacity = "1";
+    document.getElementById("html").style.visibility = 'visible';
+}, 500);
