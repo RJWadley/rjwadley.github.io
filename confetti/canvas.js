@@ -27,8 +27,8 @@ addEventListener("mousemove", function(event) {
 });
 
 addEventListener("touchmove", function(event) {
-  mouse.x = event.touches[0].clientX;
-  mouse.y = event.touches[0].clientY;
+  mouse.x = event.touches[event.touches.length-1].clientX;
+  mouse.y = event.touches[event.touches.length-1].clientY;
 });
 
 document.onkeydown = checkKey;
