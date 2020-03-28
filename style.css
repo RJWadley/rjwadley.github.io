@@ -16,6 +16,10 @@ header {
 	font-size: 2em;
 	text-align: center;
 	color: white;
+    width: calc(100vw-20px);
+    overflow: none;
+    margin: 0;
+    padding: 0;
 }
 
 a.light {
