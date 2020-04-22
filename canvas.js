@@ -18,7 +18,7 @@ for (let i = 0; i < list.length; i++) {
 
         setTimeout(function () {
             window.location = newLocation;
-        }, 600);
+        }, 700);
 
     }
 }
