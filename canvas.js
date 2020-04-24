@@ -273,11 +273,10 @@ function startAnimating(fps) {
     animate();
 }
 
-startAnimating(30);
+startAnimating(60);
 
 setTimeout(function () {
     document.body.className += " fade-in";
-    console.log(document.getElementById("html"))
     document.getElementById("html").style.opacity = "1";
     document.getElementById("html").style.visibility = "visible";
 }, 500);
