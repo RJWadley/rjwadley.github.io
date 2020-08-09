@@ -12,7 +12,8 @@ html, body {
 #counter {
     position: fixed;
 left: 0;
-top: 0
+top: 0;
+z-index: 9999;
 }
 
 canvas {
