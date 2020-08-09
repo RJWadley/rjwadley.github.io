@@ -9,6 +9,12 @@ html, body {
     overflow: hidden;
 }
 
+#counter {
+    position: fixed;
+left: 0;
+top: 0
+}
+
 canvas {
     display:block;
 }
