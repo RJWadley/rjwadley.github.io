@@ -104,11 +104,10 @@ function bubblePop() {
             circlesArray.splice(i, 1);
             let pop = new Audio('pop.mp3');
             pop.play();
+$("#counter").html(circlesArray.length);
             return true;
         }
     }
-
-$("#counter").html(circlesArray.length)
 
 }
 
