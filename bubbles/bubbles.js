@@ -108,6 +108,8 @@ function bubblePop() {
         }
     }
 
+$("#counter").html(circlesArray.length)
+
 }
 
 function bubbleBlow() {
@@ -117,6 +119,8 @@ function bubbleBlow() {
     let dx = (Math.random() - 0.5) * 4;
     let dy = (Math.random() - 0.5) * 4;
     circlesArray.push(new Circle(x, y, radius, dx, dy));
+
+$("#counter").html(circlesArray.length);
 
     let blow = new Audio('blow.mp3');
     blow.play();
